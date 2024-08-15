@@ -1,0 +1,16 @@
+/* PlayerRanking.css */
+.player-ranking {
+    margin-top: 20px;
+  }
+  
+  .ranking-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .ranking-item {
+    padding: 5px;
+    border-bottom: 1px solid #ddd;
+  }
+  

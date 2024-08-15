@@ -1,0 +1,65 @@
+/* PlayerCard.css */
+
+.player-card {
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-top: 20px;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.player-card h1 {
+  font-size: 24px;
+  margin-bottom: 16px;
+  color: #333;
+}
+
+.player-card h2 {
+  font-size: 20px;
+  margin-bottom: 12px;
+  color: #666;
+}
+
+.player-card p {
+  margin: 4px 0;
+  color: #444;
+}
+
+.tabs {
+  margin-bottom: 16px;
+  display: flex;
+  gap: 8px;
+}
+
+.tabs button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  background-color: #e0e0e0;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  color: #333;
+}
+
+.tabs button.active {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.tabs button:hover {
+  background-color: #0056b3;
+  color: #fff;
+}
+
+.tab-content {
+  margin-top: 16px;
+  background-color: #fff;
+  padding: 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.chart-container {
+  margin-top: 20px;
+}
