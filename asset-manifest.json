@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/fantasy-football-app/static/css/main.fccbbd85.css",
+    "main.js": "/fantasy-football-app/static/js/main.68c73c22.js",
+    "index.html": "/fantasy-football-app/index.html",
+    "main.fccbbd85.css.map": "/fantasy-football-app/static/css/main.fccbbd85.css.map",
+    "main.68c73c22.js.map": "/fantasy-football-app/static/js/main.68c73c22.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.fccbbd85.css",
+    "static/js/main.68c73c22.js"
+  ]
+}
