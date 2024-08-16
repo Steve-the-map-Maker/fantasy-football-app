@@ -1,0 +1,40 @@
+/* Table styling for dark mode */
+
+/* Wrapper for table responsiveness */
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* General table styling */
+  .table {
+    color: #e0e0e0; /* Light text color */
+    background-color: #333; /* Dark gray background color to match the tabs */
+  }
+  
+  /* Table header styling */
+  .table th {
+    background-color: #444; /* Slightly lighter gray than the table background */
+    color: #e0e0e0; /* Light text color */
+    border-top: 1px solid #555; /* Border to match the gray theme */
+  }
+  
+  /* Table body styling */
+  .table td {
+    border-top: 1px solid #444; /* Border to match the gray theme */
+  }
+  
+  /* Striped rows for better readability */
+  .table-striped tbody tr:nth-of-type(odd) {
+    background-color: #2c2c2c; /* Slightly darker gray for alternating rows */
+  }
+  
+  .table-striped tbody tr:nth-of-type(even) {
+    background-color: #333; /* Match the table background for even rows */
+  }
+  
+  /* Hover effect for rows */
+  .table-hover tbody tr:hover {
+    background-color: #3a3a3a; /* Slightly lighter gray on hover */
+  }
+  

@@ -161,22 +161,25 @@ const App = () => {
   );
 
   return (
-    <div className="App" style={{ display: 'flex' }}>
-      <div style={{ flex: 2 }}>
-        <input
-          type="text"
-          placeholder="Search for a player..."
-          value={searchTerm}
-          onChange={handleSearchChange}
-          style={{ marginBottom: '10px', width: '100%', padding: '8px' }}
-        />
-        <PlayerTable players={filteredPlayers} onPlayerSelect={handlePlayerSelect} />
-      </div>
-      <div style={{ flex: 1 }}>
-        {selectedPlayer && <PlayerCard player={selectedPlayer} onClose={handleClosePlayerCard} />}
+    <div className="container-fluid bg-dark text-light min-vh-100">
+      <div className="row">
+        <div className="col-md-8 col-sm-12">
+          <input
+            type="text"
+            placeholder="Search for a player..."
+            value={searchTerm}
+            onChange={handleSearchChange}
+            className="form-control mb-3 bg-secondary text-light"
+          />
+          <PlayerTable players={filteredPlayers} onPlayerSelect={handlePlayerSelect} />
+        </div>
+        <div className="col-md-4 col-sm-12">
+          {selectedPlayer && (
+            <PlayerCard player={selectedPlayer} onClose={handleClosePlayerCard} />
+          )}
+        </div>
       </div>
     </div>
   );
 };
-
 export default App;

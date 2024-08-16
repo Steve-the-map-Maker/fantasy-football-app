@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import './PlayerTable.css';
 
 const PlayerTable = ({ players, onPlayerSelect }) => {
   const [filter, setFilter] = useState({ position: '', minPPR: 0 });
   const [activeTab, setActiveTab] = useState('career');
+  const [sortConfig, setSortConfig] = useState({ key: 'avg_fantasy_points_ppr', direction: 'descending' });
 
   const handlePositionChange = (event) => {
     setFilter({ ...filter, position: event.target.value });
@@ -36,10 +38,10 @@ const PlayerTable = ({ players, onPlayerSelect }) => {
   const availableTabs = ['career', ...Array.from(allSeasons).sort()];
 
   const getDisplayedPlayers = () => {
-    if (activeTab === 'career') {
-      return filteredPlayers;
-    } else {
-      return filteredPlayers.map(player => {
+    let sortedPlayers = filteredPlayers;
+
+    if (activeTab !== 'career') {
+      sortedPlayers = filteredPlayers.map(player => {
         const seasonData = player.seasonStats[activeTab];
         if (seasonData) {
           const stdDev = calculateStandardDeviation(seasonData.weeks.map(week => week.fantasy_points_ppr));
@@ -53,17 +55,40 @@ const PlayerTable = ({ players, onPlayerSelect }) => {
         return null;
       }).filter(player => player !== null);
     }
+
+    // Sorting logic
+    if (sortConfig !== null) {
+      sortedPlayers.sort((a, b) => {
+        if (a[sortConfig.key] < b[sortConfig.key]) {
+          return sortConfig.direction === 'ascending' ? -1 : 1;
+        }
+        if (a[sortConfig.key] > b[sortConfig.key]) {
+          return sortConfig.direction === 'ascending' ? 1 : -1;
+        }
+        return 0;
+      });
+    }
+
+    return sortedPlayers;
+  };
+
+  const handleSort = (key) => {
+    let direction = 'ascending';
+    if (sortConfig && sortConfig.key === key && sortConfig.direction === 'ascending') {
+      direction = 'descending';
+    }
+    setSortConfig({ key, direction });
   };
 
   const displayedPlayers = getDisplayedPlayers();
 
   return (
-    <div>
+    <div className="player-table-container">
       <h2>Player Table</h2>
-      <div>
+      <div className="filter-controls">
         <label>
           Position:
-          <select value={filter.position} onChange={handlePositionChange}>
+          <select value={filter.position} onChange={handlePositionChange} className="form-control">
             <option value="">All</option>
             <option value="QB">QB</option>
             <option value="RB">RB</option>
@@ -78,6 +103,7 @@ const PlayerTable = ({ players, onPlayerSelect }) => {
             value={filter.minPPR}
             onChange={handlePPRChange}
             step="0.1"
+            className="form-control"
           />
         </label>
       </div>
@@ -86,7 +112,7 @@ const PlayerTable = ({ players, onPlayerSelect }) => {
         {availableTabs.map(tab => (
           <button
             key={tab}
-            className={activeTab === tab ? 'active' : ''}
+            className={activeTab === tab ? 'active btn btn-primary' : 'btn btn-secondary'}
             onClick={() => setActiveTab(tab)}
           >
             {tab === 'career' ? 'Career' : `Season ${tab}`}
@@ -94,30 +120,33 @@ const PlayerTable = ({ players, onPlayerSelect }) => {
         ))}
       </div>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Position</th>
-            <th>Team</th>
-            <th>Avg PPR</th>
-            <th>Total PPR</th>
-            <th>Std Dev PPR</th>
-          </tr>
-        </thead>
-        <tbody>
-          {displayedPlayers.map(player => (
-            <tr key={player.id} onClick={() => onPlayerSelect(player)}>
-              <td>{player.name}</td>
-              <td>{player.position}</td>
-              <td>{player.team}</td>
-              <td>{player.avg_fantasy_points_ppr ? player.avg_fantasy_points_ppr.toFixed(2) : 'N/A'}</td>
-              <td>{player.fantasy_points_ppr ? player.fantasy_points_ppr.toFixed(2) : 'N/A'}</td>
-              <td>{player.std_dev_fantasy_points_ppr ? player.std_dev_fantasy_points_ppr.toFixed(2) : 'N/A'}</td>
+      {/* Responsive table wrapper */}
+      <div className="table-responsive">
+        <table className="table table-striped">
+          <thead>
+            <tr>
+              <th onClick={() => handleSort('name')}>Name</th>
+              <th onClick={() => handleSort('position')}>Position</th>
+              <th onClick={() => handleSort('team')}>Team</th>
+              <th onClick={() => handleSort('avg_fantasy_points_ppr')}>Avg PPR</th>
+              <th onClick={() => handleSort('fantasy_points_ppr')}>Total PPR</th>
+              <th onClick={() => handleSort('std_dev_fantasy_points_ppr')}>Std Dev PPR</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {displayedPlayers.map(player => (
+              <tr key={player.id} onClick={() => onPlayerSelect(player)}>
+                <td><strong> {player.name} </strong></td>
+                <td>{player.position}</td>
+                <td>{player.team}</td>
+                <td>{player.avg_fantasy_points_ppr ? player.avg_fantasy_points_ppr.toFixed(2) : 'N/A'}</td>
+                <td>{player.fantasy_points_ppr ? player.fantasy_points_ppr.toFixed(2) : 'N/A'}</td>
+                <td>{player.std_dev_fantasy_points_ppr ? player.std_dev_fantasy_points_ppr.toFixed(2) : 'N/A'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

@@ -45,17 +45,6 @@ const PlayerCard = ({ player, onClose }) => { // onClose prop added
   const seasonTotals = (
     <div className="tab-content">
       <h2>Season Totals and Averages</h2>
-      <div className="tabs">
-        {seasonStats.map(season => (
-          <button
-            key={season.season}
-            className={activeTab === season.season ? 'active' : ''}
-            onClick={() => handleTabChange(season.season)}
-          >
-            {season.season}
-          </button>
-        ))}
-      </div>
       <div>
         {seasonStats.find(season => season.season === activeTab) && (
           <div>
