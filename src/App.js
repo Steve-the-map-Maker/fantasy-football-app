@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import PlayerCard from './components/PlayerCard';
-import PlayerRanking from './components/PlayerRanking';
-import playersData from './data/players.json'; // Ensure this path is correct
+import playersData from './data/players.json'; 
+import PlayerTable from './components/PlayerTable';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
 const App = () => {
@@ -13,7 +14,6 @@ const App = () => {
     // Aggregate player data to summarize the entire career
     const aggregatedData = Object.keys(playersData).map(name => {
       const playerStats = playersData[name];
-      const numSeasons = new Set(playerStats.map(game => game.season)).size;
       const totalWeeks = playerStats.length;
       const summary = playerStats.reduce((acc, game) => {
         acc.completions += game.completions;
@@ -135,7 +135,7 @@ const App = () => {
     aggregatedData.sort((a, b) => b.avg_fantasy_points_ppr - a.avg_fantasy_points_ppr);
 
     setPlayers(aggregatedData);
-  }, []);
+  }, [playersData]);
 
   const handleSearchChange = (event) => {
     const term = event.target.value;
@@ -149,17 +149,32 @@ const App = () => {
       setSelectedPlayer(null);
     }
   };
+  const handleClosePlayerCard = () => {
+    setSelectedPlayer(null);
+  };
+  const handlePlayerSelect = (player) => {
+    setSelectedPlayer(player);
+  };
+
+  const filteredPlayers = players.filter(player =>
+    player.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
-    <div className="App">
-      <input
-        type="text"
-        placeholder="Search for a player..."
-        value={searchTerm}
-        onChange={handleSearchChange}
-      />
-      {selectedPlayer && <PlayerCard player={selectedPlayer} />}
-      <PlayerRanking players={players} />
+    <div className="App" style={{ display: 'flex' }}>
+      <div style={{ flex: 2 }}>
+        <input
+          type="text"
+          placeholder="Search for a player..."
+          value={searchTerm}
+          onChange={handleSearchChange}
+          style={{ marginBottom: '10px', width: '100%', padding: '8px' }}
+        />
+        <PlayerTable players={filteredPlayers} onPlayerSelect={handlePlayerSelect} />
+      </div>
+      <div style={{ flex: 1 }}>
+        {selectedPlayer && <PlayerCard player={selectedPlayer} onClose={handleClosePlayerCard} />}
+      </div>
     </div>
   );
 };

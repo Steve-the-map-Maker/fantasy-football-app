@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './PlayerCard.css';
 import PlayerChart from './PlayerChart';
 
-const PlayerCard = ({ player }) => {
+const PlayerCard = ({ player, onClose }) => { // onClose prop added
   const [activeTab, setActiveTab] = useState('career');
   const seasonStats = Object.keys(player.seasonStats).map(season => ({
     season,
@@ -88,26 +88,31 @@ const PlayerCard = ({ player }) => {
   );
 
   return (
-    <div className="player-card">
-      <h1>{player.name}</h1>
-      <div className="tabs">
-        <button
-          className={activeTab === 'career' ? 'active' : ''}
-          onClick={() => handleTabChange('career')}
-        >
-          Career
-        </button>
-        {seasonStats.map(season => (
-          <button
-            key={season.season}
-            className={activeTab === season.season ? 'active' : ''}
-            onClick={() => handleTabChange(season.season)}
-          >
-            {season.season}
-          </button>
-        ))}
+    <div className="card mb-3">
+      <div className="card-header d-flex justify-content-between align-items-center">
+        <h1 className="card-title">{player.name}</h1>
+        <button onClick={onClose} className="btn btn-danger">X</button>
       </div>
-      {activeTab === 'career' ? careerAverages : seasonTotals}
+      <div className="card-body">
+        <div className="btn-group mb-3">
+          <button
+            className={`btn btn-${activeTab === 'career' ? 'primary' : 'secondary'}`}
+            onClick={() => handleTabChange('career')}
+          >
+            Career
+          </button>
+          {seasonStats.map(season => (
+            <button
+              key={season.season}
+              className={`btn btn-${activeTab === season.season ? 'primary' : 'secondary'}`}
+              onClick={() => handleTabChange(season.season)}
+            >
+              {season.season}
+            </button>
+          ))}
+        </div>
+        {activeTab === 'career' ? careerAverages : seasonTotals}
+      </div>
     </div>
   );
 };
